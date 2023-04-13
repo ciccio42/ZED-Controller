@@ -1,8 +1,8 @@
 # Cameras' id
 camera_id: {
-  camera_front_id: "16702584",
-  camera_lateral_right_id: "11990492",
-  camera_lateral_left_id: "-1",
+  camera_front_id: "-1", #"16702584",
+  camera_lateral_right_id: "-1", #"11990492",
+  camera_lateral_left_id: "-1", #"15689351",
   camera_robot_id: "16450494",
 }
 

@@ -41,6 +41,10 @@ namespace zed_camera_controller{
             bool get_frame(zed_camera_controller::GetFrames::Request &req, zed_camera_controller::GetFrames::Response &res);
             cv::Mat slMat2cvMat(sl::Mat& input);
             int getOCVtype(sl::MAT_TYPE type);
+            int get_width();
+            int get_height();
+            std::vector<double> get_intrinsic_matrix();
+            std::vector<double> get_distorsion_parameters();
         private:
             std::vector<sl::Camera*> _zed_cameras;
             sl::InitParameters _init_camera_parameters;

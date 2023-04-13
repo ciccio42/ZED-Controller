@@ -60,26 +60,13 @@ int main (int argc, char **argv)
     // Advertising service
     ros::ServiceServer get_frames_service = nh.advertiseService("get_frames", &zed_camera_controller::ZEDCameraController::get_frame, &camera_controller);
     ROS_INFO_STREAM("---- RUNNING SERVICE ----");
+
+    // Publishing camera information on parameter server
+    nh.setParam("img_width", camera_controller.get_width());
+    nh.setParam("img_height", camera_controller.get_height());
+    nh.setParam("intrinsic_matrix", camera_controller.get_intrinsic_matrix());
+    nh.setParam("factor_depth", 1);
+    nh.setParam("distorsion_parameters", camera_controller.get_distorsion_parameters());
     ros::spin();
 
-    // // Create multi-camera handler
-    // ROS_INFO_STREAM("---- INIT MULTI-CAMERA CONTROLLER ----");
-    // try
-    // {
-    //     camera_controller::CameraController camera_controller(serials, width, height, fps);
-    //     // Advertising service
-    //     ros::ServiceServer get_frames_service = nh.advertiseService("get_frames", &camera_controller::CameraController::getFrames, &camera_controller);
-    //     ROS_INFO_STREAM("---- RUNNING SERVICE ----");
-    //     ros::spin();
-    // }
-    // catch(camera_controller::CameraControllerException& e)
-    // {
-    //     ROS_ERROR_STREAM(e.what());
-    //     return EXIT_FAILURE;
-    // }
-    // catch(rs2::error e)
-    // {
-    //     ROS_ERROR_STREAM(e.what());
-    //     return EXIT_FAILURE;
-    // }
 }
