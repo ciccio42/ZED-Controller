@@ -39,11 +39,10 @@ ZEDCameraController::ZEDCameraController(std::vector<unsigned int> serials, sl::
         
     }
 
-    // Set runtime parameters after opening the camera
-    this->_runtime_parameters.sensing_mode = sl::SENSING_MODE::STANDARD; // Use STANDARD sensing mode
-    this->_img_width = this->_zed_cameras[0]->getCameraInformation().camera_resolution.width;
-    this->_img_height = this->_zed_cameras[0]->getCameraInformation().camera_resolution.height;
-
+    // Set runtime parameters after opening the camera    
+    this->_runtime_parameters.enable_fill_mode = true; // Use STANDARD sensing mode
+    this->_img_width = this->_zed_cameras[0]->getCameraInformation().camera_configuration.resolution.width;
+    this->_img_height = this->_zed_cameras[0]->getCameraInformation().camera_configuration.resolution.height;
 }
 
 ZEDCameraController::~ZEDCameraController()
