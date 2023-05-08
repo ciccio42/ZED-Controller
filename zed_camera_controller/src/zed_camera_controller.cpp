@@ -22,10 +22,11 @@ ZEDCameraController::ZEDCameraController(std::vector<unsigned int> serials, sl::
         this->_init_camera_parameters.depth_mode = depth_mode;
         this->_init_camera_parameters.coordinate_units = coordinate_units;
         this->_init_camera_parameters.depth_minimum_distance = depth_minimum_distance;
-        this->_init_camera_parameters.depth_maximum_distance =  depth_maximum_distance; 
-
+        this->_init_camera_parameters.depth_maximum_distance =  depth_maximum_distance;
+        this->_init_camera_parameters.camera_disable_self_calib = true;
         // open camera stream
-        if(serial != -1){
+        if (serial != -1)
+        {
             sl::Camera* camera = new sl::Camera();
             sl::ERROR_CODE err = camera->open(this->_init_camera_parameters);
             if (err != sl::ERROR_CODE::SUCCESS){
@@ -36,11 +37,10 @@ ZEDCameraController::ZEDCameraController(std::vector<unsigned int> serials, sl::
             this->_zed_cameras.push_back(camera);
             ROS_INFO_STREAM("Camera initialized " << camera->getCameraInformation().serial_number);
         }
-        
     }
 
-    // Set runtime parameters after opening the camera    
-    this->_runtime_parameters.enable_fill_mode = true; // Use STANDARD sensing mode
+    // Set runtime parameters after opening the camera
+    this->_runtime_parameters.sensing_mode = sl::SENSING_MODE::STANDARD; // Use STANDARD sensing mode
     this->_img_width = this->_zed_cameras[0]->getCameraInformation().camera_configuration.resolution.width;
     this->_img_height = this->_zed_cameras[0]->getCameraInformation().camera_configuration.resolution.height;
 }
@@ -67,22 +67,35 @@ std::vector<double> ZEDCameraController::get_intrinsic_matrix(){
     intrinsic_metrix[0] = calibration_params.left_cam.fx;
     intrinsic_metrix[4] = calibration_params.left_cam.fy;
     intrinsic_metrix[2] = calibration_params.left_cam.cx;
-    intrinsic_metrix[6] = calibration_params.left_cam.cy;
+    intrinsic_metrix[5] = calibration_params.left_cam.cy;
     return intrinsic_metrix;
 }
 
-std::vector<double> ZEDCameraController::get_distorsion_parameters(){
-    std::vector<double> distorsion_parameters = {0.0, 0.0, 0.0, 0.0, 0.0};
+std::vector<float> ZEDCameraController::get_distorsion_parameters()
+{
+    std::vector<float> distorsion_parameters = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
     sl::CalibrationParameters calibration_params = this->_zed_cameras[0]->getCameraInformation().camera_configuration.calibration_parameters;
     distorsion_parameters[0] = calibration_params.left_cam.disto[0];
     distorsion_parameters[1] = calibration_params.left_cam.disto[1];
     distorsion_parameters[2] = calibration_params.left_cam.disto[2];
     distorsion_parameters[3] = calibration_params.left_cam.disto[3];
     distorsion_parameters[4] = calibration_params.left_cam.disto[4];
+    distorsion_parameters[5] = calibration_params.left_cam.disto[5];
+    distorsion_parameters[6] = calibration_params.left_cam.disto[6];
+    distorsion_parameters[7] = calibration_params.left_cam.disto[7];
+    distorsion_parameters[8] = calibration_params.left_cam.disto[8];
+    distorsion_parameters[9] = calibration_params.left_cam.disto[9];
+    distorsion_parameters[10] = calibration_params.left_cam.disto[10];
+    distorsion_parameters[11] = calibration_params.left_cam.disto[11];
+    for (double parameter : calibration_params.left_cam.disto)
+    {
+        ROS_INFO_STREAM("Distortion parameter " << parameter);
+    }
     return distorsion_parameters;
 }
 
-bool ZEDCameraController::get_frame(zed_camera_controller::GetFrames::Request &req, zed_camera_controller::GetFrames::Response &res){
+bool ZEDCameraController::get_frame(zed_camera_controller::GetFrames::Request &req, zed_camera_controller::GetFrames::Response &res)
+{
 
     // Define image and depth matrices
     sl::Mat rgb_image(this->_img_width, this->_img_height, sl::MAT_TYPE::U8_C4);

@@ -1,15 +1,15 @@
 # Cameras' id
 camera_id: {
-  camera_front_id: "-1", #"16702584",
-  camera_lateral_right_id: "-1", #"11990492",
+  camera_front_id: "-1", #"16450494",
+  camera_lateral_right_id: "-1", #11990492",
   camera_lateral_left_id: "-1", #"15689351",
-  camera_robot_id: "16450494",
+  camera_robot_id: "16702584", #"16702584", 
 }
 
 # Image resolution and frame rate
-camera_resolution: "VGA"
+camera_resolution: "HD720"
 fps: 30
 depth_mode: "PERFORMANCE"
 coordinate_units: "METER"
-depth_minumum_distance: -1.0
-depth_maximum_distance: -1.0
+depth_minumum_distance: 0.2
+depth_maximum_distance: 2.0

@@ -1,12 +1,11 @@
 <launch>
 
-<!-- Load camera settings on parameter server-->
-<rosparam command="load" file="$(find zed_camera_controller)/config/camera_config.yaml" />
+    <!-- Load camera settings on parameter server-->
+    <rosparam command="load" file="$(find zed_camera_controller)/config/camera_config.yaml" />
 
-<!-- Run multicamera handler node-->
-<group ns="cameras">
+    <!-- Run multicamera handler node-->
     <node name="camera_controller_node" pkg="zed_camera_controller" type="zed_camera_controller_node" respawn="false" output="screen"/>
-</group>
 
 
-</launch>
+
+</launch>exit

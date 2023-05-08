@@ -44,7 +44,7 @@ namespace zed_camera_controller{
             int get_width();
             int get_height();
             std::vector<double> get_intrinsic_matrix();
-            std::vector<double> get_distorsion_parameters();
+            std::vector<float> get_distorsion_parameters();
         private:
             std::vector<sl::Camera*> _zed_cameras;
             sl::InitParameters _init_camera_parameters;
