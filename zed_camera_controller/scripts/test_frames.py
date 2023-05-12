@@ -54,6 +54,7 @@ if __name__ == "__main__":
             if show_image:
                 cv2.imshow("Color image", color_cv_image)
                 cv2.imshow("Depth image", depth_cv_image)
+                cv2.imwrite(f"{j}.png", color_cv_image)
                 cv2.waitKey(0)
                 cv2.destroyAllWindows()
 
@@ -68,7 +69,8 @@ if __name__ == "__main__":
                         row_frames.append(frame)
                 row = cv2.hconcat(row_frames)
                 frames.append(row)
-            new_image = np.array(cv2.resize(cv2.vconcat(frames), (width, height)), np.uint8)
+            new_image = np.array(cv2.resize(
+                cv2.vconcat(frames), (width, height)), np.uint8)
             cv2.imshow("Color image", new_image)
             # cv2.imshow("Depth image", depth_cv_image)
             cv2.waitKey(0)
