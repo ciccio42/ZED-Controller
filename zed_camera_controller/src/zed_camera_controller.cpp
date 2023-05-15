@@ -23,7 +23,7 @@ ZEDCameraController::ZEDCameraController(std::vector<unsigned int> serials, sl::
         this->_init_camera_parameters.coordinate_units = coordinate_units;
         this->_init_camera_parameters.depth_minimum_distance = depth_minimum_distance;
         this->_init_camera_parameters.depth_maximum_distance =  depth_maximum_distance;
-        this->_init_camera_parameters.camera_disable_self_calib = true;
+        this->_init_camera_parameters.camera_disable_self_calib = false;
         // open camera stream
         if (serial != -1)
         {
@@ -40,7 +40,7 @@ ZEDCameraController::ZEDCameraController(std::vector<unsigned int> serials, sl::
     }
 
     // Set runtime parameters after opening the camera
-    this->_runtime_parameters.sensing_mode = sl::SENSING_MODE::STANDARD; // Use STANDARD sensing mode
+    this->_runtime_parameters.enable_fill_mode = false; // Use STANDARD sensing mode
     this->_img_width = this->_zed_cameras[0]->getCameraInformation().camera_configuration.resolution.width;
     this->_img_height = this->_zed_cameras[0]->getCameraInformation().camera_configuration.resolution.height;
 }

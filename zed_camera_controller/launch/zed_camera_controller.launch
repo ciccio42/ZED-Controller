@@ -5,6 +5,6 @@
 
     <!-- Run multicamera handler node-->
     <node name="camera_controller_node" pkg="zed_camera_controller"
-        type="zed_camera_controller_node" respawn="false" output="screen" />
+        type="zed_camera_controller_node" respawn="false" output="screen" required="true" />
 
 </launch>

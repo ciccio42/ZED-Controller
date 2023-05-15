@@ -8,7 +8,7 @@ if(NOT LINK_SHARED_ZED AND MSVC)
 endif()
 
 # # Compile as C++11, supported in ROS Kinetic and newer
-find_package(ZED 3 REQUIRED)
+find_package(ZED 4 REQUIRED)
 find_package(CUDA REQUIRED)
 
 # # Find catkin macros and libraries
