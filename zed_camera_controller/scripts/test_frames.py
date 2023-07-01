@@ -25,16 +25,18 @@ if __name__ == "__main__":
         frames = get_frames_client()
         color_frames = frames.color_frames
         depth_frames = frames.depth_frames
-        rospy.loginfo(f"Number of color frames {len(color_frames)}")
-        rospy.loginfo(
-            f"Color image dimension ({color_frames[0].width},{color_frames[0].height})")
-        rospy.loginfo(f"Number of depth frames {len(depth_frames)}")
-        rospy.loginfo(
-            f"Color image dimension ({depth_frames[0].width},{depth_frames[0].height})")
-        # if i == 0:
-        #     for j in range(len(color_frames)):
-        #         writers_rgb.append (cv2.VideoWriter(f'test_camera_{j+1}.mp4', cv2.VideoWriter_fourcc(*'DIVX'), 30, (640,480)))
-        #     i += 1
+        # rospy.loginfo(f"Number of color frames {len(color_frames)}")
+        # rospy.loginfo(
+        #     f"Color image dimension ({color_frames[0].width},{color_frames[0].height})")
+        # # rospy.loginfo(f"Number of depth frames {len(depth_frames)}")
+        # rospy.loginfo(
+        #     f"Color image dimension ({depth_frames[0].width},{depth_frames[0].height})")
+        if i == 0:
+            for j in range(len(color_frames)):
+                writers_rgb.append(cv2.VideoWriter(
+                    f'test_camera_{j+1}.avi', cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'), 30, (color_frames[0].width, color_frames[0].height)))
+                print(writers_rgb)
+            i += 1
 
         # show obtained frames
 
@@ -47,35 +49,23 @@ if __name__ == "__main__":
             if j == 0:
                 height = color_cv_image.shape[0]
                 width = color_cv_image.shape[1]
+            color_cv_image = cv2.cvtColor(color_cv_image, cv2.COLOR_RGBA2RGB)
             rgb_frames.append(color_cv_image)
-            depth_cv_image = bridge.imgmsg_to_cv2(
-                depth_msg, desired_encoding='passthrough')
-            print(depth_cv_image)
+
+        for k in range(len(writers_rgb)):
+            # rospy.loginfo("Write frame")
+            # writers_rgb[k].write(rgb_frames[k])
+            # depth_cv_image = bridge.imgmsg_to_cv2(
+            #     depth_msg, desired_encoding='passthrough')
+            # print(depth_cv_image)
             if show_image:
                 cv2.imshow("Color image", color_cv_image)
-                cv2.imshow("Depth image", depth_cv_image)
-                cv2.imwrite(f"{j}.png", color_cv_image)
+                # cv2.imshow("Depth image", depth_cv_image)
+                # cv2.imwrite(f"{j}.png", color_cv_image)
                 cv2.waitKey(0)
                 cv2.destroyAllWindows()
 
-        if len(rgb_frames) == 4:
-            frames = []
-            for i in range(2):
-                row_frames = []
-                for j in range(2):
-                    index = i * 2 + j
-                    if index < 4:
-                        frame = rgb_frames[index]
-                        row_frames.append(frame)
-                row = cv2.hconcat(row_frames)
-                frames.append(row)
-            new_image = np.array(cv2.resize(
-                cv2.vconcat(frames), (width, height)), np.uint8)
-            cv2.imshow("Color image", new_image)
-            # cv2.imshow("Depth image", depth_cv_image)
-            cv2.waitKey(0)
-
         rate.sleep()
 
-    # for j in len(writers_rgb):
-    #     writers_rgb[i].release()
+    for j in len(writers_rgb):
+        writers_rgb[j].release()
