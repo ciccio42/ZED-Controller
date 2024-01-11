@@ -1,5 +1,5 @@
 # Front
-
+# With Respect to table_1 frame
 camera_pose: 
   position: 
     x: 0.45380661695322316
@@ -13,7 +13,6 @@ camera_pose:
 
 
 # Right
-  
 camera_pose: 
   position: 
     x: -0.3582777207605626

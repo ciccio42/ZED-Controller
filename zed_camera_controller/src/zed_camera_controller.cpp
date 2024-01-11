@@ -98,6 +98,8 @@ bool ZEDCameraController::get_frame(zed_camera_controller::GetFrames::Request &r
 {
 
     // Define image and depth matrices
+
+    ROS_INFO_STREAM("Gettin new frames");
     sl::Mat rgb_image(this->_img_width, this->_img_height, sl::MAT_TYPE::U8_C4);
     sl::Mat depth_image(this->_img_width, this->_img_height, sl::MAT_TYPE::F32_C1); 
     sl::Mat depth_image_normalized(this->_img_width, this->_img_height, sl::MAT_TYPE::U8_C4); 
@@ -133,10 +135,11 @@ bool ZEDCameraController::get_frame(zed_camera_controller::GetFrames::Request &r
             
         }else{
             // ToDo return error in service message
+            ROS_INFO_STREAM("Error in camera service");
             return false;
         }
     }
-
+    ROS_INFO_STREAM("Returning frames\n\n");
     return true;
 }
 
