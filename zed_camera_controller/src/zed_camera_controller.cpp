@@ -29,10 +29,17 @@ ZEDCameraController::ZEDCameraController(std::vector<unsigned int> serials, sl::
         {
             sl::Camera* camera = new sl::Camera();
             sl::ERROR_CODE err = camera->open(this->_init_camera_parameters);
-            if (err != sl::ERROR_CODE::SUCCESS){
-                std::string error_msg = "Fail in open the camera";
-                ROS_ERROR_STREAM("Fail in open the camera\nError code "<<err);
-                throw std::runtime_error(error_msg);
+            while
+                (err != sl::ERROR_CODE::SUCCESS)
+            { 
+                if (err != sl::ERROR_CODE::SUCCESS)
+                {
+                    std::string error_msg = "Fail in open the camera";
+                    ROS_ERROR_STREAM("Fail in open the camera\nError code " << err);
+                    // throw std::runtime_error(error_msg);
+                }
+
+                sl::ERROR_CODE err = camera->open(this->_init_camera_parameters);
             }
             this->_zed_cameras.push_back(camera);
             ROS_INFO_STREAM("Camera initialized " << camera->getCameraInformation().serial_number);

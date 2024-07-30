@@ -7,7 +7,7 @@ import numpy as np
 
 if __name__ == "__main__":
     i = 0
-    show_image = True
+    show_image = False
     writers_rgb = []
 
     rospy.init_node('frames_tester', anonymous=True)
@@ -25,16 +25,16 @@ if __name__ == "__main__":
         frames = get_frames_client()
         color_frames = frames.color_frames
         depth_frames = frames.depth_frames
-        # rospy.loginfo(f"Number of color frames {len(color_frames)}")
-        # rospy.loginfo(
-        #     f"Color image dimension ({color_frames[0].width},{color_frames[0].height})")
-        # # rospy.loginfo(f"Number of depth frames {len(depth_frames)}")
-        # rospy.loginfo(
-        #     f"Color image dimension ({depth_frames[0].width},{depth_frames[0].height})")
+        rospy.loginfo(f"Number of color frames {len(color_frames)}")
+        rospy.loginfo(
+            f"Color image dimension ({color_frames[0].width},{color_frames[0].height})")
+        # rospy.loginfo(f"Number of depth frames {len(depth_frames)}")
+        rospy.loginfo(
+            f"Color image dimension ({depth_frames[0].width},{depth_frames[0].height})")
         if i == 0:
             for j in range(len(color_frames)):
                 writers_rgb.append(cv2.VideoWriter(
-                    f'test_camera_{j+1}.avi', cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'), 30, (color_frames[0].width, color_frames[0].height)))
+                    f'test_camera_{j+1}.avi', cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'), 30, (color_frames[j].width, color_frames[j].height)))
                 print(writers_rgb)
             i += 1
 
@@ -53,15 +53,15 @@ if __name__ == "__main__":
             rgb_frames.append(color_cv_image)
 
         for k in range(len(writers_rgb)):
-            # rospy.loginfo("Write frame")
-            # writers_rgb[k].write(rgb_frames[k])
-            # depth_cv_image = bridge.imgmsg_to_cv2(
-            #     depth_msg, desired_encoding='passthrough')
-            # print(depth_cv_image)
+            rospy.loginfo("Write frame")
+            writers_rgb[k].write(rgb_frames[k])
+            depth_cv_image = bridge.imgmsg_to_cv2(
+                depth_msg, desired_encoding='passthrough')
+            print(depth_cv_image)
             if show_image:
                 cv2.imshow("Color image", color_cv_image)
-                # cv2.imshow("Depth image", depth_cv_image)
-                # cv2.imwrite(f"{j}.png", color_cv_image)
+                cv2.imshow("Depth image", depth_cv_image)
+                cv2.imwrite(f"{j}.png", color_cv_image)
                 cv2.waitKey(0)
                 cv2.destroyAllWindows()
 
