@@ -28,5 +28,5 @@ if __name__ == "__main__":
     while not rospy.is_shutdown():
         rospy.loginfo("Asking for aruco pose")
         aruco_pose = get_aruco_pose()
-        rospy.loginfo(f"Camera pose wrt world \n {aruco_pose}")
+        rospy.loginfo(f"Camera pose wrt table_1 frame \n {aruco_pose}")
         rate.sleep()
